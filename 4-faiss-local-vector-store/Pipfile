@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain = "*"
+langchain-openai = "*"
+python-dotenv = "*"
+langchainhub = "*"
+langchain-community="*"
+black = "*"
+pypdf = "*"
+faiss-cpu = "*"
+
+[dev-packages]
+
+[requires]
+# not using latest version cause pinecone is not yet supported with the python latest version.
+python_version = "3.12.8"
