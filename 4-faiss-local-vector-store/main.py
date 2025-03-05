@@ -9,7 +9,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain import hub
 
 if __name__ == "__main__":
-    print("hi")
+    print("hi this is a tut on FAISS local vector database.")
     pdf_path = r"C:\Users\shawn\Documents\DevFiles\personal\LangChain(course)\4-faiss-local-vector-store\react.pdf"
 
     # pyPDFLoader loads and reads the pdf and put them into Langchain Document type objects
