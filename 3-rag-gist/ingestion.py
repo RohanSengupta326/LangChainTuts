@@ -44,7 +44,7 @@ load_dotenv()
 if __name__ == '__main__':
     print("Ingesting...")
     # Langchain has multiple document loaders like this one
-    # for slack, google drive, whatsapp etc
+    # for slack, google drive, whatsapp, pdf, csv files etc
     # some are inbuilt some are community created.
     # can found usage on langchain docs => document loader.
     loader = TextLoader(r"C:\Users\shawn\Documents\DevFiles\personal\LangChain(course)\3-rag-gist\mediumblog1.txt",
