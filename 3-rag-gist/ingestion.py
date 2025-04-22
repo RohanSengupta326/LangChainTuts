@@ -41,7 +41,7 @@ load_dotenv()
 # texts converted to vectors we need to store in pinecone vector db.
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     print("Ingesting...")
     # Langchain has multiple document loaders like this one
     # for slack, google drive, whatsapp, pdf, csv files etc
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     document = loader.load()
 
     print("splitting...")
-    # split texts into chunks .
+    # split texts into chunks . 
     # chunk_size = more chunk size = more money = confused llm
     # but also should be big enough to understand what the chunk means
     # to humans and llms both. else it won't generate proper response.

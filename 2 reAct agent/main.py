@@ -87,6 +87,8 @@ if __name__ == "__main__":
     Action Input: the input to the action
     Observation: the result of the action
     ... (this Thought/Action/Action Input/Observation can repeat N times)
+
+
     Thought: I now know the final answer
     Final Answer: the final answer to the original input question
 
@@ -129,7 +131,7 @@ if __name__ == "__main__":
     # to store the previous llm iteration data and results.
     intermediate_steps = []
 
-    # 'input' is the dynamic variable in the prompt template which is the actual question
+    # 'input' is the dynamic variable used in the prompt template which is the actual question
     # from the user. we have to provide it in a dict format.
     # IMPORTANTLY: the question prompt can change how the llm answers, it follows the
     # format mentioned in prompt template, if it doesn't, it won't create the
@@ -207,7 +209,8 @@ if __name__ == "__main__":
             {
                 # if this input also included a input variable we would have to use another PromptTemplate
                 # with simple input variable
-                """ e.g:  prompt_template.format_prompt(name_of_person=name) """
+                #  e.g:  prompt_template.format_prompt(name_of_person=name) 
+                
                 "input": "What is the length of 'DOG' in characters?",
                 "agent_scratchpad": intermediate_steps,
             }
