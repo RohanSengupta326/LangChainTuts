@@ -1,0 +1,15 @@
+{
+  "include": [
+    "ice_breaker"
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "executionEnvironments": [
+    {
+      "root": "ice_breaker",
+      "extraPaths": [
+        "ice_breaker"
+      ]
+    }
+  ]
+}

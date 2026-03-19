@@ -1,0 +1,10 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/ice_breaker"
+  ],
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/ice_breaker"
+  ],
+  "python.terminal.activateEnvironment": true
+}
