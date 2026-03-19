@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-from langchain.prompts.prompt import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI  # Still using LangChain's OpenAI wrapper
 
 from langchain_ollama import ChatOllama
@@ -63,11 +63,11 @@ def ice_break_with(name: str) -> Tuple[Summary, str]:
     # similarly it has other wrappers to wrap the usage of other orgs api keys
     # anthropic, deepseek, google etc.
 
-    # Using OpenRouter instead of OpenAI
-    # hence had to update the OPENAI_API_BASE
-    # in the .env file to redirect to openrouter and not openAI
-    # as langchain doesn't support openRouter directly. so
-    # had to bypass the base url.
+    # llm = ChatOpenRouter(
+    #   model="openai/gpt-4.1",
+    #   temperature=0,
+    # )
+
     llm = ChatOpenAI(
         temperature=0, model="cognitivecomputations/dolphin3.0-r1-mistral-24b:free"
     )
@@ -117,13 +117,13 @@ def ice_break_with(name: str) -> Tuple[Summary, str]:
     """
 
     # agentic search to find linkedin profile url
-    linkedin_username = linkedin_lookup_agent(name=name)
+    linkedin_profile_url = linkedin_lookup_agent(name=name)
     # send the url to scrape linkedin to get the data.
     # linkedin_data = scrape_linkedin_profile(
     #     linkedin_profile_url="https://www.linkedin.com/in/eden-marco/", mock=True
     # )
     linkedin_data = scrape_linkedin_profile(
-        linkedin_profile_url=linkedin_username, mock=True
+        linkedin_profile_url=linkedin_profile_url, mock=True
     )
 
     # if u want to scrape twitter too.

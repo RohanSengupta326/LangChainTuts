@@ -5,14 +5,15 @@ import requests
 
 load_dotenv()
 
-# required for tweepy, needed to be setup in the .env file.
-twitter_client = tweepy.Client(
-    bearer_token=os.environ["TWITTER_BEARER_TOKEN"],
-    consumer_key=os.environ["TWITTER_API_KEY"],
-    consumer_secret=os.environ["TWITTER_API_KEY_SECRET"],
-    access_token=os.environ["TWITTER_ACCESS_TOKEN"],
-    access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
-)
+
+def _get_twitter_client() -> tweepy.Client:
+    return tweepy.Client(
+        bearer_token=os.environ["TWITTER_BEARER_TOKEN"],
+        consumer_key=os.environ["TWITTER_API_KEY"],
+        consumer_secret=os.environ["TWITTER_API_KEY_SECRET"],
+        access_token=os.environ["TWITTER_ACCESS_TOKEN"],
+        access_token_secret=os.environ["TWITTER_ACCESS_TOKEN_SECRET"],
+    )
 
 
 def scrape_user_tweets(username, num_tweets=5, mock: bool = False):
@@ -27,6 +28,7 @@ def scrape_user_tweets(username, num_tweets=5, mock: bool = False):
         tweets = requests.get(eden_twitter_gist, timeout=5).json()
 
     else:
+        twitter_client = _get_twitter_client()
         user_id = twitter_client.get_user(username=username).data.id
         tweets = twitter_client.get_users_tweets(
             id=user_id, max_results=num_tweets, exclude=["retweets", "replies"]

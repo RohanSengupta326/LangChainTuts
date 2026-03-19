@@ -2,14 +2,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from langchain_openai import ChatOpenAI
-from langchain.prompts.prompt import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_core.tools import Tool
-from langchain.agents import (
-    create_react_agent,
-    AgentExecutor,
-)
-from langchain import hub
+from langchain.agents import create_agent
 from tools.tools import get_profile_url_tavily
 
 from langchain_ollama import ChatOllama
@@ -45,20 +40,14 @@ def lookup(name: str) -> str:
         )
     ]
 
-    #  from langchain hub package
-    # react : a prompt sends to agent including tools and stuff
-    # explained later on ReAct paper uses chain of thoughts.
-    react_prompt = hub.pull("hwchase17/react")
-
-    # from langchain agents package
-    # creates the agent by providing it with all it needs.
-    # this is actually the recipe of how to perform actions.
-    agent = create_react_agent(llm=llm, tools=tools_for_agent, prompt=react_prompt)
-
-    # from langchain agents pacakge
-    # runtime for the agent.
-    # this actually is responsible for actually invoking the required python methods that the agent needs
-    agent_executor = AgentExecutor(agent=agent, tools=tools_for_agent, verbose=True)
+    agent = create_agent(
+        model=llm,
+        tools=tools_for_agent,
+        system_prompt=(
+            "You find the correct LinkedIn profile page for a person. "
+            "Use the search tool when needed and return only one URL."
+        ),
+    )
 
 
     """ 
@@ -78,14 +67,27 @@ def lookup(name: str) -> str:
 
 
     # the dict key name is 'input' cause its the input variable in the react prompt. 
-    result = agent_executor.invoke(
-        input={"input": prompt_template.format_prompt(name_of_person=name)}
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt_template.format(name_of_person=name),
+                }
+            ]
+        }
     )
 
     # print(result)
 
     # get the output from the response
-    linked_profile_url = result["output"]
+    final_message = result["messages"][-1]
+    content = getattr(final_message, "content", "")
+    if isinstance(content, list):
+        content = "".join(
+            part.get("text", "") for part in content if isinstance(part, dict)
+        )
+    linked_profile_url = str(content).strip()
 
     # print(linked_profile_url)
 

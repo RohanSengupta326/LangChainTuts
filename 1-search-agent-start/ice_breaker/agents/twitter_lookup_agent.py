@@ -2,13 +2,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 from langchain_openai import ChatOpenAI
-from langchain.prompts.prompt import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_core.tools import Tool
-from langchain.agents import (
-    create_react_agent,
-    AgentExecutor,
-)
-from langchain import hub
+from langchain.agents import create_agent
 from tools.tools import get_profile_url_tavily
 
 
@@ -31,15 +27,33 @@ def lookup(name: str) -> str:
         )
     ]
 
-    react_prompt = hub.pull("hwchase17/react")
-    agent = create_react_agent(llm=llm, tools=tools_for_agent, prompt=react_prompt)
-    agent_executor = AgentExecutor(agent=agent, tools=tools_for_agent, verbose=True)
-
-    result = agent_executor.invoke(
-        input={"input": prompt_template.format_prompt(name_of_person=name)}
+    agent = create_agent(
+        model=llm,
+        tools=tools_for_agent,
+        system_prompt=(
+            "You find a person's Twitter or X profile. "
+            "Use the search tool when needed and return only the username."
+        ),
     )
 
-    twitter_username = result["output"]
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt_template.format(name_of_person=name),
+                }
+            ]
+        }
+    )
+
+    final_message = result["messages"][-1]
+    content = getattr(final_message, "content", "")
+    if isinstance(content, list):
+        content = "".join(
+            part.get("text", "") for part in content if isinstance(part, dict)
+        )
+    twitter_username = str(content).strip()
     return twitter_username
 
 
