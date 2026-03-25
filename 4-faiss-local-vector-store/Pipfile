@@ -17,4 +17,4 @@ faiss-cpu = "*"
 
 [requires]
 # not using latest version cause pinecone is not yet supported with the python latest version.
-python_version = "3.12.8"
+python_version = "3.11"
