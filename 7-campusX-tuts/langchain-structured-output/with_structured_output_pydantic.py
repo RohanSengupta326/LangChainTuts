@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from typing import TypedDict, List, Literal, Annotated, Optional
+from typing import List, Literal, Annotated, Optional
 from langchain import chat_models
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
