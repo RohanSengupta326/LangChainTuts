@@ -26,6 +26,6 @@ prompt = PromptTemplate(
 
 chain = prompt | model |  outputParser
 
-result = chain.invoke({'input': ''})
+result = chain.invoke({})
 
 print(result)
